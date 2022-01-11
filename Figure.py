@@ -16,7 +16,7 @@ col['black'] = '#000000'
 
 subject_id = 'fsaverage'
 surf = 'inflated'
-label = pd.read_csv('SBC_coord.csv')
+label = pd.read_csv('data/SBC_coord.csv')
 
 for hemi in ['lh', 'rh']:
     roi = ['PCC', 'PCu', 'aMCC', 'dmPFC', 'frontalpole', 'pMCC', 'rACC', 'vmPFC']
