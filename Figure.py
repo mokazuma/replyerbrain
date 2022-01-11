@@ -17,6 +17,7 @@ col['black'] = '#000000'
 subject_id = 'fsaverage'
 surf = 'inflated'
 label = pd.read_csv('data/SBC_coord.csv')
+''' Social Brain Connectome (SBC): https://neurovault.org/collections/2462/'''
 
 for hemi in ['lh', 'rh']:
     roi = ['PCC', 'PCu', 'aMCC', 'dmPFC', 'frontalpole', 'pMCC', 'rACC', 'vmPFC']
