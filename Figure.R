@@ -1,15 +1,12 @@
 
 require(tidyverse)
 require(circlize)
-setwd('/Users/kmori/Dropbox/Paper/CiNet/SNS_rsMRI/')
 
 #######################################################
 # Figure 2
 #######################################################
-##### read data from CONN
-filename = 'result/Replycnt_rev/stat.txt'
-# filename = 'result/Reply/stat_cnt_person.txt'
-df = read_fwf(filename, skip=2) %>% select(X2, X3, X6) %>% na.omit()
+##### data from CONN
+df = read_fwf('stat.txt', skip=2) %>% select(X2, X3, X6) %>% na.omit()
 
 names(df) = c('from', 'to', 't')
 namechange = function(name) {
@@ -22,7 +19,7 @@ df$from = namechange(df$from)
 df$to = namechange(df$to)
 
 ##### diagram
-Cairo::CairoPNG("figure/network_circlecnt_rev.png", width = 1024, height = 768, dpi=175)
+Cairo::CairoPNG("Figure2b.png", width = 1024, height = 768, dpi=175)
 chordDiagram(df, 
              grid.col = c(`L-IFG`='red', `FP`='violet', `rACC`='orange'), 
              annotationTrack = c("name", "grid"), 
