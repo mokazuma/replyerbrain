@@ -19,7 +19,7 @@ template = load_mni152_template(resolution=2)
 niinorm = lambda x: resample_to_img(nib.load(x), template).get_fdata()
 
 ### from CONN
-maskdat = niinorm('seed_lIFG_vox200/Mask.nii')
+maskdat = niinorm('seed_lIFG_vox200/replyer.ROIs.nii')
 filelist = sorted(glob.glob('firstlevel/BETA_Subject*_Conditionxxx_Sourcexxx.nii'))
 
 ### get feature
