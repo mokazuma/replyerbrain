@@ -11,7 +11,7 @@ scaler = StandardScaler()
 # centrality
 #######################################################
 ##### read adjacency matrix from CONN
-mridat = sio.loadmat('result/Reply_rev/adjmat.mat')
+mridat = sio.loadmat('adjmat.mat')
 adjmat_all = pd.DataFrame()
 for id in range(mridat['A'].shape[2]):
     adjmat = pd.DataFrame(mridat['A'][:, :, id])
@@ -37,8 +37,10 @@ for s in adjmat_all['ID'].drop_duplicates():
 #######################################################
 # regression analysis
 #######################################################
-snsdat = pd.read_csv('data/twicl223-222.csv').iloc[:222].reset_index(drop=True)
-dv = 'Reply_lognetwork'
+
+'''set snsdat as twitter data'''
+
+dv = 'Reply_network'
 cntvars = ['year', 'age', 'sex', 'AUDIT', 'FTND', 'SES']
 # cntvars = cntvars + ['Big5_E', 'Big5_A', 'Big5_C', 'Big5_N', 'Big5_O',
 #                      'IRI_F', 'IRI_PT', 'IRI_EC', 'IRI_PD', 'SHS']
@@ -47,7 +49,7 @@ centdf = pd.DataFrame()
 for i in gt_all['index'].drop_duplicates():
     roidf = pd.DataFrame()
     for r in gt_all['ROI'].drop_duplicates():
-        partdat = gt_all.query('ROI==@r & index==@i').reset_index(drop=True)
+        partdat = gt_all.query('index==@i & ROI==@r').reset_index(drop=True)
         X = pd.concat([partdat[['score']], snsdat[cntvars]], axis=1)
 
         ### normalization
