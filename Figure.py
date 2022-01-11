@@ -16,7 +16,7 @@ col['black'] = '#000000'
 
 subject_id = 'fsaverage'
 surf = 'inflated'
-label = pd.read_csv('data/SBC_coord.csv')
+label = pd.read_csv('SBC_coord.csv')
 
 for hemi in ['lh', 'rh']:
     roi = ['PCC', 'PCu', 'aMCC', 'dmPFC', 'frontalpole', 'pMCC', 'rACC', 'vmPFC']
@@ -38,39 +38,39 @@ for hemi in ['lh', 'rh']:
     ''' %gui qt '''
     for v in ['med', 'lat']:
         brain.show_view(v)
-        brain.save_image('figure/SBC_'+hemi+'-'+v+'.png')
+        brain.save_image('SBC_'+hemi+'-'+v+'.png')
 
 ############################################################################
 # Figure 3
 ############################################################################
 ##### seed-based brain
-plotting.plot_stat_map('result/Reply_rev/seed_lIFG_vox200/ROI.nii', cut_coords=[-2, -52, 26], draw_cross=False,
-                       output_file='figure/lIFG_seed_gray_rev.png')
+plotting.plot_stat_map('replyerROI.nii', cut_coords=[-2, -52, 26], draw_cross=False,
+                       output_file='Figure3a.png')
 
 ##### prediction
-preddat = pd.read_pickle('result/decoding/pred.pkl')
+preddat = pd.read_pickle('pred.pkl')
 preddat = preddat.groupby('id').mean()
 scaler.fit(preddat)
 x = 'Actual Reply network size'; y = 'Predicted Reply network size'
-sdat_norm = pd.DataFrame(scaler.transform(preddat)).rename(columns={0: x, 1: y})
+plotdat = pd.DataFrame(scaler.transform(preddat)).rename(columns={0: x, 1: y})
 
 sns.set(font_scale=1.5, style="ticks")
-sns.jointplot(x=x, y=y, kind="reg", data=sdat_norm)
+sns.jointplot(x=x, y=y, kind="reg", data=plotdat)
 plt.tight_layout()
-plt.savefig('Figure/scatter-prediction_rev.png')
+plt.savefig('Figure3b.png')
 plt.close()
 
 ##### permutation test
-score = pd.read_pickle('result/decoding/stat.pkl')
-perm_score = pd.read_pickle('result/decoding/perm.pkl')
+stat = pd.read_pickle('stat.pkl')
+perm = pd.read_pickle('perm.pkl')
 
 sns.set(font_scale=1.75, style="ticks")
 fig = plt.figure(figsize=(9, 7))
-plt.hist(perm_score, 20, label='Permutation scores', edgecolor='black', color='m')
+plt.hist(perm, 20, label='Permutation scores', edgecolor='black', color='m')
 ylim = plt.ylim()
-plt.plot(2 * [score['r'].mean()], ylim, '--b', linewidth=3, label='Prediction Score')
+plt.plot(2 * [stat['r'].mean()], ylim, '--b', linewidth=3, label='Prediction Score')
 plt.ylim(ylim), plt.legend()
 plt.ylabel('Count'), plt.xlabel('Correlation')
 plt.tight_layout()
-plt.savefig('figure/perm_rev.png')
+plt.savefig('Figure3c.png')
 plt.close()
