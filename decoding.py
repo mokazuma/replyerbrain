@@ -12,6 +12,35 @@ import nibabel as nib
 from nilearn.datasets import load_mni152_template
 from nilearn.image import resample_to_img
 
+########################################################################
+# set data
+########################################################################
+template = load_mni152_template(resolution=2)
+niinorm = lambda x: resample_to_img(nib.load(x), template).get_fdata()
+
+### from CONN
+maskdat = niinorm('seed_lIFG_vox200/Mask.nii')
+filelist = sorted(glob.glob('firstlevel/BETA_Subject*_Conditionxxx_Sourcexxx.nii'))
+
+### get feature
+feature = pd.DataFrame()
+for f in filelist:
+    ### whole brain correlation
+    dat3d = niinorm(f)
+
+    ### get masked correlation
+    bin3d = np.where(maskdat == 0, 0, dat3d)
+    seedcor = bin3d[np.nonzero(bin3d)]
+    # seedcor.shape
+
+    feature = pd.concat([feature, pd.DataFrame(seedcor).T])
+
+'''set snsdat as twitter data'''
+target = snsdat['Reply_network']
+
+########################################################################
+# brain decoding
+########################################################################
 def mlpipe(features, target, cv=10, rand=1, permnumber=None):
 
     ### make pipeline
@@ -37,38 +66,7 @@ def mlpipe(features, target, cv=10, rand=1, permnumber=None):
 
         return pd.DataFrame({'score': perm_scores})
 
-########################################################################
-# set data
-########################################################################
-template = load_mni152_template(resolution=2)
-niinorm = lambda x: resample_to_img(nib.load(x), template).get_fdata()
-
-### from CONN
-maskdat = niinorm('result/Reply_rev/seed_lIFG_vox200/ROI.ROIS.nii')
-filelist = sorted(glob.glob('result/firstlevel/BETA_Subject*_Condition001_Source340.nii'))
-
-### get feature
-feature = pd.DataFrame()
-for f in filelist:
-    ### whole brain correlation
-    dat3d = niinorm(f)
-
-    ### get masked correlation
-    bin3d = np.where(maskdat == 0, 0, dat3d)
-    seedcor = bin3d[np.nonzero(bin3d)]
-    # seedcor.shape
-
-    feature = pd.concat([feature, pd.DataFrame(seedcor).T])
-feature.to_pickle('data/cormat_seed_rev.pkl')
-
-########################################################################
-# brain prediction
-########################################################################
-##### set data
-feature = pd.read_pickle('data/cormat_seed_rev.pkl').reset_index(drop=True)
-snsdat = pd.read_csv('data/twicl223-222.csv').iloc[:222].reset_index(drop=True)
-target = snsdat['Reply_lognetwork']
-
+    
 ##### machine learning prediction
 cv = 2
 pred = pd.DataFrame(); stat = pd.DataFrame()
@@ -79,8 +77,8 @@ for rr in range(100):
     mae = mean_absolute_error(res['true'], res['pred'])
     stat = pd.concat([stat, pd.DataFrame({'r': [r], 'mae': [mae]})])
 
-pred.to_pickle('result/decoding/pred.pkl')
-stat.to_pickle('result/decoding/stat.pkl')
+pred.to_pickle('pred.pkl')
+stat.to_pickle('stat.pkl')
 
 ##### permutation test
 n = 10000
@@ -88,4 +86,4 @@ perm = mlpipe(feature, target, cv=cv, permnumber=n)
 average = stat['r'].mean()
 len(perm.query('score > @average')) / len(perm)  # p-value
 
-perm.to_pickle('result/decoding/perm.pkl')
+perm.to_pickle('perm.pkl')
