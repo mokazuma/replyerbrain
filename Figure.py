@@ -44,7 +44,7 @@ for hemi in ['lh', 'rh']:
 # Figure 3
 ############################################################################
 ##### seed-based brain
-plotting.plot_stat_map('replyerROI.nii', cut_coords=[-2, -52, 26], draw_cross=False,
+plotting.plot_stat_map('seed-basedFC.nii', cut_coords=[-2, -52, 26], draw_cross=False,
                        output_file='Figure3a.png')
 
 ##### prediction
