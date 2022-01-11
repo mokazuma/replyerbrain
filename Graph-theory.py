@@ -1,7 +1,7 @@
 
 import pandas as pd
-import bct
 import scipy.io as sio
+import bct
 import statsmodels.api as sm
 from statsmodels.stats.multitest import multipletests as mlptest
 from sklearn.preprocessing import StandardScaler
@@ -41,7 +41,7 @@ for s in adjmat_all['ID'].drop_duplicates():
 '''set snsdat as twitter data'''
 
 dv = 'Reply_network'
-cntvars = ['year', 'age', 'sex', 'AUDIT', 'FTND', 'SES']
+cntvars = ['age', 'gender', 'year', 'AUDIT', 'FTND', 'SES']
 # cntvars = cntvars + ['Big5_E', 'Big5_A', 'Big5_C', 'Big5_N', 'Big5_O',
 #                      'IRI_F', 'IRI_PT', 'IRI_EC', 'IRI_PD', 'SHS']
 
