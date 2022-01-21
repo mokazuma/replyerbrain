@@ -36,7 +36,7 @@ for f in filelist:
     feature = pd.concat([feature, pd.DataFrame(seedcor).T])
 
 '''set snsdat as twitter data'''
-target = snsdat['Reply_network']
+target = snsdat['reply_network']
 
 ########################################################################
 # brain decoding
