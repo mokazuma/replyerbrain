@@ -40,7 +40,7 @@ for s in adjmat_all['ID'].drop_duplicates():
 
 '''set snsdat as twitter data'''
 
-dv = 'Reply_network'
+dv = 'reply_network'
 cntvars = ['age', 'gender', 'year', 'AUDIT', 'FTND', 'SES']
 # cntvars = cntvars + ['Big5_E', 'Big5_A', 'Big5_C', 'Big5_N', 'Big5_O',
 #                      'IRI_F', 'IRI_PT', 'IRI_EC', 'IRI_PD', 'SHS']
