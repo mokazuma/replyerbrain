@@ -2,7 +2,7 @@
 resting-fMRI analysis with twitter behavior
 ![image](logo.png)
 
-- Twitter collection was performed by Python-twitter
+- Tweet collection was performed by Python-twitter
 - ROI to ROI analysis was performed by CONN
 - Seed to voxel analysis was performed by CONN
 - Graph theory analysis was performed by CONN and BrainConnectivity toolbox
