@@ -2,9 +2,9 @@
 resting-fMRI analysis with twitter behavior
 ![image](logo.png)
 
-- Tweet collection was performed by Python-twitter
-- ROI to ROI analysis was performed by CONN
-- Seed to voxel analysis was performed by CONN
-- Graph theory analysis was performed by CONN and BrainConnectivity toolbox
-- Decoding analysis was performed by Nilearn and Scikit-learn
-- Visualization was performed by CONN, Nilearn, PySurfer, and Circlize
+- Tweet collection: Python-twitter
+- ROI to ROI analysis: CONN
+- Seed to voxel analysis: CONN
+- Graph theory analysis: CONN, BrainConnectivity toolbox
+- Decoding analysis: Nilearn, Scikit-learn
+- Visualization: CONN, Nilearn, PySurfer, Circlize
