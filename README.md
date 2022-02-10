@@ -7,4 +7,4 @@ resting-fMRI analysis with twitter behavior
 - Seed to voxel analysis: CONN
 - Graph theory analysis: CONN, BrainConnectivity toolbox
 - Decoding analysis: Nilearn, Scikit-learn
-- Visualization: CONN, Nilearn, PySurfer, Circlize
+- Visualization: CONN, Nilearn, Seaborn, PySurfer, Circlize
