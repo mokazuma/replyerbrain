@@ -1,12 +1,13 @@
 
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+from matplotlib import colorbar
 import seaborn as sns
+import nibabel as nib
 from nilearn import plotting
 from surfer import Brain
-from sklearn.preprocessing import StandardScaler
-scaler = StandardScaler()
 
 ############################################################################
 # Figure 1
@@ -45,31 +46,50 @@ for hemi in ['lh', 'rh']:
 # Figure 3
 ############################################################################
 ##### seed-based brain
-plotting.plot_stat_map('seed-basedFC.nii', cut_coords=[-2, -52, 26], draw_cross=False,
-                       output_file='Figure3a.png')
+file = ''' statistical map from CONN '''
+
+sns.set(font_scale=1, style="ticks")
+fig, (img_ax, cbar_ax) = plt.subplots(1, 2, figsize=(7, 2),
+                                      gridspec_kw={"width_ratios": [10.0, 0.1], "wspace": 0.0})
+
+plotting.plot_stat_map(file, cut_coords=[-2, -52, 26],
+                       draw_cross=False, colorbar=False, axes=img_ax)
+
+img = nib.load(file).get_fdata()
+img_max = np.max(img)
+cbar = colorbar.ColorbarBase(
+    cbar_ax,
+    ticks=[0, round(img_max)],
+    norm=mcolors.Normalize(vmin=0, vmax=img_max),
+    orientation="vertical",
+    cmap='hot',
+    label="$\t{t}$ value"
+)
+plt.savefig('Figure3a.png')
+plt.close()
 
 ##### prediction
-preddat = pd.read_pickle('pred.pkl')
+preddat = pd.read_pickle('result/decoding/pred.pkl')
 preddat = preddat.groupby('id').mean()
-scaler.fit(preddat)
-x = 'Actual Reply network size'; y = 'Predicted Reply network size'
-plotdat = pd.DataFrame(scaler.transform(preddat)).rename(columns={0: x, 1: y})
+score = pd.read_pickle('result/decoding/stat.pkl')
+r = score['r'].mean()
 
-sns.set(font_scale=1.5, style="ticks")
-sns.jointplot(x=x, y=y, kind="reg", data=plotdat)
+sns.set(font_scale=1.2, style="ticks")
+g = sns.jointplot(x='true', y='pred', kind="reg", data=preddat)
+g.set_axis_labels('Actual Reply network size', 'Predicted Reply network size')
+g.ax_joint.annotate('$\it{r}$'+' = {:.2f} '.format(r), xy=(-2.5, 1.1), fontsize=22)
 plt.tight_layout()
 plt.savefig('Figure3b.png')
 plt.close()
 
 ##### permutation test
-stat = pd.read_pickle('stat.pkl')
-perm = pd.read_pickle('perm.pkl')
+perm_score = pd.read_pickle('result/decoding/perm.pkl')
 
-sns.set(font_scale=1.75, style="ticks")
+sns.set(font_scale=1.5, style="ticks")
 fig = plt.figure(figsize=(9, 7))
-plt.hist(perm, 20, label='Permutation scores', edgecolor='black', color='m')
+plt.hist(perm_score, 20, label='Permutation scores', edgecolor='black', color='m')
 ylim = plt.ylim()
-plt.plot(2 * [stat['r'].mean()], ylim, '--b', linewidth=3, label='Prediction Score')
+plt.plot(2 * [r], ylim, '--b', linewidth=3, label='Prediction Score')
 plt.ylim(ylim), plt.legend()
 plt.ylabel('Count'), plt.xlabel('Correlation')
 plt.tight_layout()
