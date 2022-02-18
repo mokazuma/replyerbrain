@@ -1,6 +1,6 @@
 # Brain network of twitter replyer at rest
 resting-fMRI analysis with twitter behavior
-![image](logo.png)
+![image](img/logo.png)
 
 - Tweet collection: Python-twitter
 - ROI to ROI analysis: CONN
