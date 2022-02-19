@@ -3,6 +3,6 @@
 
 - Tweet collection: Python-twitter
 - ROI to ROI / Seed to voxel analysis: CONN
-- Graph theory analysis: CONN, Brain Connectivity toolbox
+- Graph theory analysis: CONN, Brain connectivity toolbox
 - Decoding analysis: Nilearn, Scikit-learn
 - Visualization: CONN, Nilearn, PySurfer, Circlize, Matplotlib, Seaborn
