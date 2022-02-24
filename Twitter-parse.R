@@ -37,8 +37,7 @@ json_parse = function(username) {
                      follower = user$followers_count,
                      favourite = user$favourites_count,
                      api_tweet = tweet$text %>% length(),
-                     api_retweet = tweet$text %>% str_detect('RT @|RT@') %>% 
-                       which() %>% length(),
+                     api_retweet = tweet$text %>% str_detect('RT @|RT@') %>% which() %>% length(),
                      api_hashtag = getsum(tweet$hashtags),
                      api_link = getsum(tweet$urls),
                      api_media = getsum(tweet$media)
