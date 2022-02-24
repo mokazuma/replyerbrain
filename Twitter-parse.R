@@ -8,14 +8,12 @@ json_parse = function(username) {
   }
   
   getsum <- function(dat) {
-    sumdat = dat %>% lapply(str_count) %>% lapply(mean) %>% unlist() %>% 
-      na.omit() %>% length()
+    sumdat = dat %>% lapply(str_count) %>% lapply(mean) %>% unlist() %>% na.omit() %>% length()
     return(sumdat)
   }
   
   ##### read json data
-  # JSON file is collected by python-twitter
-  # https://github.com/bear/python-twitter
+  # JSON file is collected by python-twitter: https://github.com/bear/python-twitter
   user = jsonlite::fromJSON(paste0(username, 'user.json')) #from UserLookup function
   tweet = jsonlite::fromJSON(paste0(username, 'twits.json')) #from GetUserTimeline function
   
